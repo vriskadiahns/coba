@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form RSVP</title>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyD7ZYSusJoa6y-EmFrCtbnsyBgpKbLGQRI",
+            authDomain: "rsvp-psdm-2023.firebaseapp.com",
+            databaseURL: "https://rsvp-psdm-2023-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "rsvp-psdm-2023",
+            storageBucket: "rsvp-psdm-2023.appspot.com",
+            messagingSenderId: "612693996836",
+            appId: "1:612693996836:web:923b6859b9b3262b022fb1",
+            measurementId: "G-WCGB4XFC7N"
+        };
+
+firebase.initializeApp(firebaseConfig);
+
+        function submitForm() {
+            form = document.getElementById("rsvpForm");
+            formData = new FormData(form);
+
+            // Simpan data ke Firebase
+            db = firebase.database().db.ref('/').child(nama).push({
+                nama: formData.get('nama'),
+                nim: formData.get('nim'),
+                prodi: formData.get('prodi'),
+                angkatan: formData.get('angkatan'),
+                kehadiran: formData.get('kehadiran')
+            });
+
+            alert("Terima kasih! Data Anda sudah disubmit.");
+        }
+    </script>
+</head>
+<body>
+    <h2>Form RSVP</h2>
+    <form id="rsvpForm">
+        <label for="nama">Nama:</label>
+        <input type="text" id="nama" name="nama" required><br>
+
+        <label for="nim">NIM:</label>
+        <input type="text" id="nim" name="nim" required><br>
+
+        <label for="prodi">Prodi:</label>
+        <select id="prodi" name="prodi">
+            <option value="informatika">Informatika</option>
+            <option value="sains-data">Sains Data</option>
+        </select><br>
+
+        <label for="angkatan">Angkatan:</label>
+        <select id="angkatan" name="angkatan">
+            <option value="2020">2020</option>
+            <option value="2021">2021</option>
+            <option value="2022">2022</option>
+            <option value="2023">2023</option>
+        </select><br>
+
+        <label for="kehadiran">Konfirmasi Kehadiran:</label>
+        <select id="kehadiran" name="kehadiran">
+            <option value="hadir">Hadir</option>
+            <option value="tidak-hadir">Tidak Hadir</option>
+        </select><br>
+
+        <button type="button" onclick="submitForm()">Submit</button>
+    </form>
+</body>
+</html>

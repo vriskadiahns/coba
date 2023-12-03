@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="styleLink.css">
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>psdm-fatisda-awarding</title>
+  <link rel="preload" as="image" href="background/desktop.png">
+  <link rel="preload" as="image" href="background/mobile.png">
+  
+  <script src="src/index.js"></script>
+</head>
+<body>
+  <section id="hero" class="hero w-100 h-100 p-3 mx-auto text-center d-flex justify-content-center align-items-center text-white">
+    <form>
+
+      <label for="Nama">NAMA</label>
+      <input type="text" value="" id="Nama" name="Nama" required>
+
+      <label for="NIM">NIM</label>
+      <input type="text" value="" id="NIM" name="NIM" required>
+
+      <label for="Prodi">PRODI</label>
+      <select id="Prodi" name="Prodi" required>
+        <option value="" disabled selected></option>
+        <option value="Informatika">Informatika</option>
+        <option value="Sains Data">Sains Data</option>
+      </select>
+
+      <label for="Angkatan">ANGKATAN</label>
+      <select id="Angkatan" name="Angkatan" required>
+        <option value="" disabled selected></option>
+        <option value="2020">2020</option>
+        <option value="2021">2021</option>
+        <option value="2022">2022</option>
+        <option value="2023">2023</option>
+      </select>
+
+      <label for="Kehadiran">KONFIRMASI KEHADIRAN</label>
+      <select id="Kehadiran" name="Kehadiran" required>
+        <option value="" disabled selected></option>
+        <option value="hadir">Hadir</option>
+        <option value="tidak_hadir">Tidak Hadir</option>
+      </select>
+
+      <input type="submit" value="submit" class="sub" id="submit">
+    </form>
+  </section>
+
+    <script type="module">
+
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+        import { getDatabase, ref, set, get,child } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyD7ZYSusJoa6y-EmFrCtbnsyBgpKbLGQRI",
+          authDomain: "rsvp-psdm-2023.firebaseapp.com",
+          databaseURL: "https://rsvp-psdm-2023-default-rtdb.asia-southeast1.firebasedatabase.app",
+          projectId: "rsvp-psdm-2023",
+          storageBucket: "rsvp-psdm-2023.appspot.com",
+          messagingSenderId: "612693996836",
+          appId: "1:612693996836:web:923b6859b9b3262b022fb1",
+          measurementId: "G-WCGB4XFC7N"
+        };
+
+        const app = initializeApp(firebaseConfig);
+
+        const db = getDatabase(app);
+
+        document.getElementById("submit").addEventListener('click', function(e){
+          e.preventDefault();
+          
+          // Mendapatkan nomor urut terakhir dan menambahkannya
+          get(child(ref(db, 'rsvp'), 'lastNumber')).then((snapshot) => {
+            const lastNumber = snapshot.val() || 0;
+            const newNumber = lastNumber + 1;
+    
+            // Menyimpan nomor urut terbaru
+            set(ref(db, 'rsvp/lastNumber'), newNumber);
+    
+            // Menyimpan data dengan nomor urut
+            set(ref(db, 'rsvp/' + newNumber),
+            {
+              nama: document.getElementById("Nama").value,
+              nim: document.getElementById("NIM").value,
+              prodi: document.getElementById("Prodi").value,
+              angkatan: document.getElementById("Angkatan").value,
+              kehadiran: document.getElementById("Kehadiran").value
+            });
+    
+            window.location.href = "success.html";
+          });
+        });
+
+    </script>
+
+    <script src="src/index.js"></script>
+</body>
+</html>
